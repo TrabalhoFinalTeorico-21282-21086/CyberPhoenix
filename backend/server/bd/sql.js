@@ -1,29 +1,23 @@
 const sqlite3 = require("sqlite3");
 const path = require("path");
 
-const bd = new sqlite3.Database(path.join(__dirname,"/database.db"), sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
+const bd = new sqlite3.Database(path.join(__dirname, "/database.db"), sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
     (err) => {
-        if(err) console.error(err.message);
+        if (err) console.error(err.message);
         else console.log("Connected to the sqlite database");
     }
 );
 
 bd.run(
-   `create table if not exists users(
+    `create table if not exists users(
         idUser varchar(250),
-        nome varchar(250) not null,
-        apelido varchar(250) not null,
-        username varchar(250) not null,
+        username varchar(250) not null unique,
         pass varchar(250) not null,
-        descricao text(1000), 
+        descricao text(1000),
+        email varchar(250),
+        role int,
+        dataiv varchar(250),
         primary key(idUser)
-    );
-    
-    create table if not exists telemovel(
-        idUser varchar(250),
-        telemovel char(12) unique not null,
-        primary key (idUser),
-        foreign key(idUser) references users(idUser)
     );
 
     create table if not exists subscriccao(
