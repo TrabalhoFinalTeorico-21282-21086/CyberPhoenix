@@ -1,5 +1,4 @@
-const metodosBD = require("./../services/services");
-
+const metodosBD = require("./../services/upDownService");
 
 exports.teste = (req, res) => {
     metodosBD.testePromise()
@@ -7,21 +6,20 @@ exports.teste = (req, res) => {
         .catch(err => res.status(500).send(err.message));
 }
 
-exports.insNewUser = (req, res) => {
-    metodosBD.inserirUser(req.body)
+exports.mostrarFicheiros = (req, res) => {
+    metodosBD.mostrarFicheiros()
         .then(result => res.json(result))
         .catch(err => res.status(500).send(err.message));
 }
 
-exports.mostrarUsers = (req, res) => {
-    metodosBD.mostrarUsers()
+exports.inserirFicheiroImaginario = (req, res) => {
+    metodosBD.inserirFicheiroImaginario(req.body)
         .then(result => res.json(result))
         .catch(err => res.status(500).send(err.message));
 }
 
-exports.apagarTudo = (req, res) => {
-    metodosBD.apagartudo()
+exports.inserirFicheiro = (req, res) => {
+    metodosBD.inserirFicheiro(req.params.id, req.body, req.files)
         .then(result => res.json(result))
         .catch(err => res.status(500).send(err.message));
 }
-

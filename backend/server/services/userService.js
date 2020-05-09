@@ -10,18 +10,18 @@ exports.registar = (body) => {
         const email = cifra.encrypt(body.email, dataiv);
         bd.run(`insert into users(idUser, username, pass, descricao, email, role, dataiv) values(?, ?, ?, ?, ?, ?, ?);`, [id, body.username, password, body.descricao, email, 1, dataiv], err => {
             if (err) reject({ message: "unsuccess" })
-            else resolve({ message: "success", role: 1 });
+            else resolve({ message: "success", role: 1, _id: id });
         });
     });
 }
 
 exports.autenticar = (body) => {
     return new Promise((resolve, reject) => {
-        bd.all(`select username, pass, dataiv, role from users`, (err, rows) => {
+        bd.all(`select idUser, username, pass, dataiv, role from users`, (err, rows) => {
             if (err) reject(err.message);
             else {
                 rows.forEach(element => {
-                    if (element.username == body.username && body.pass == cifra.decrypt(element.pass, element.dataiv)) resolve({ message: "success", role: element.role });
+                    if (element.username == body.username && body.pass == cifra.decrypt(element.pass, element.dataiv)) resolve({ message: "success", role: element.role, _id: element.idUser });
                 });
                 resolve({ message: "unsuccess" });
             }

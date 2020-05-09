@@ -5,6 +5,7 @@ const upload = require('express-fileupload');
 const cors = require("cors");
 const rotas = require("./routes/routes");
 const userRotas = require("./routes/userRoute");
+const uploadDownload = require("./routes/upDownRoutes");
 
 const app = express();
 
@@ -14,25 +15,28 @@ app.use(cors());
 
 app.get("/", (req, res) => {
     res.sendFile(__dirname + "/index.html");
-})
+});
 
-app.use("/home", (req, res) => { res.send("se estas ler isto é porque esta tudo bem") });
+
+app.use("/ficheiro", uploadDownload);
 app.use("/teste", rotas);
 app.use("/users", userRotas);
 
+/*
 app.post('/', (req, res) => {
     if (req.files) {
-        const file = req.files.File;
+        const file = req.files.file;
         const filename = file.name;
         file.mv(path.join(__dirname, "/files/", filename), (err) => {
-            if (err) res.send(err);
-            else res.send("File Upload");
+            if (err) res.send({ message: err });
+            else res.send({ message: "File Upload" });
         });
     }
 });
+*/
 
 app.use("/download", (req, res) => {
-    res.download(path.join(__dirname, "/files/imagem.jpg"), (err) => {
+    res.download(path.join(__dirname, "/files/2018_BD2_Ficha2.pdf"), (err) => {
         if (err) console.log("ocorreu um erro no download");
         else console.log("download com sucesso");
     });

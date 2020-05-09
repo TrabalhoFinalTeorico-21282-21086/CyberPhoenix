@@ -53,6 +53,7 @@ class Register extends Component {
             .then(res => {
                 const data = res.data;
                 this.context.login({ username: this.state.username, data });
+                window.location.assign("/");
             })
             .catch(err => { alert("Username " + this.state.username + " já em uso"); })
     }
@@ -79,7 +80,7 @@ class Register extends Component {
                         <label >Description</label>
                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={this.actDescricao}></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Registar</button>
                 </form>
             </div>
         );
