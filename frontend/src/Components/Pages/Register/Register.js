@@ -49,9 +49,11 @@ class Register extends Component {
     }
 
     submit = (event) => {
+        event.preventDefault();
         Axios.post("http://localhost:5000/users/registar", this.state)
             .then(res => {
                 const data = res.data;
+                console.log(data);
                 this.context.login({ username: this.state.username, data });
                 window.location.assign("/");
             })

@@ -7,32 +7,12 @@ exports.testePromise = () => {
     });
 }
 
-exports.mostrarFicheiros = () => {
-    return new Promise((resolve, reject) => {
-        bd.all(`select * from ficheiro;`, (err, rows) => {
-            if (err) reject({ err });
-            else resolve(rows);
-        });
-    });
-}
-
-exports.inserirFicheiroImaginario = (body) => {
-    const idFicheiro = uuid();
-    return new Promise((resolve, reject) => {
-        bd.run(`insert into ficheiro(idFicheiro, idUser, nome, descricao, localFicheiro) values(?,?,?,?,?);`, [idFicheiro, body.idUser, body.nome, body.descricao, body.local], (err) => {
-            if (err) reject({ err });
-            else resolve({ message: "Ficheiro carregado com sucesso" });
-        }
-        );
-    });
-}
-
 exports.inserirFicheiro = (idUser, body, file) => {
     const idFicheiro = uuid();
     const ficheiro = file.file;
-    const nomeFicheiro = "../files/f" + idUser + ficheiro.name;
+    const nomeFicheiro = "f" + idUser + ficheiro.name;
     return new Promise((resolve, reject) => {
-        bd.run(`insert into ficheiro(idFicheiro, idUser, nome, descricao, localFicheiro) values(?,?,?,?,?);`, [idFicheiro, idUser, body.nome, body.descricao, nomeFicheiro], err => {
+        bd.run(`insert into ficheiro(idFicheiro, idUser, nome, descricao, tipoDeFicheiro, localFicheiro) values(?,?,?,?,?,?);`, [idFicheiro, idUser, body.nome, body.descricao, body.tipo, nomeFicheiro], err => {
             if (err) reject({ message: "Nâo foi possivel carregar o ficheiro" });
             else {
                 ficheiro.mv(__dirname + "/../files/" + nomeFicheiro, erro => {

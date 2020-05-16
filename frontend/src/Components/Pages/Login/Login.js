@@ -40,7 +40,6 @@ class Login extends Component {
                     window.location.assign("/");
                 }
                 else alert("Username ou Password não verificam");
-                //data.message === "success" ? this.context.login({ username: this.state.username, data }) : alert("Username ou Password não verificam");
             })
             .catch(err => { console.log(err); })
     }

@@ -27,6 +27,7 @@ bd.run(
         idUser varchar(250) not null,
         nome varchar(250),
         descricao text(1000),
+        tipoDeFicheiro varchar(20),
         localFicheiro varchar(255),
         primary key(idFicheiro),
         foreign key (idUser) references users(idUser)

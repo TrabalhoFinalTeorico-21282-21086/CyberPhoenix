@@ -9,6 +9,7 @@ class Upload extends Component {
         this.state = {
             nome: "Nome do ficheiro",
             descricao: "",
+            tipoDeFicheiro: "Outro",
             file: null
         };
     }
@@ -21,27 +22,40 @@ class Upload extends Component {
     }
 
     actNome = (event) => {
+        event.preventDefault();
         this.setState({
             nome: event.target.value
         });
     }
 
     actDescricao = (event) => {
+        event.preventDefault();
         this.setState({
             descricao: event.target.value
         });
+        console.log(this.state);
+    }
+
+    actTipo = (event) => {
+        event.preventDefault();
+        if (event.target.value === "Diga qual o tipo do seu ficheiro") this.setState({ tipoDeFicheiro: "Outro" });
+        else this.setState({ tipoDeFicheiro: event.target.value });
     }
 
     actFile = (event) => {
+        event.preventDefault();
         this.setState({
             file: event.target.files[0]
         });
     }
 
+
     submit = (event) => {
+        event.preventDefault();
         const formData = new FormData();
         formData.set('nome', this.state.nome);
         formData.set('descricao', this.state.descricao);
+        formData.set('tipo', this.state.tipoDeFicheiro);
         formData.append('file', this.state.file);
         const config = {
             headers: {
@@ -49,12 +63,11 @@ class Upload extends Component {
                 'content-type': 'multipart/form-data'
             }
         }
-        Axios.post("http://localhost:5000/ficheiro/" + this.context.user.data._id, formData, config)
-            .then(res => {
-                const data = res.data;
-                console.log(data);
-            })
+        Axios.post("http://localhost:5000/updown/upload/" + this.context.user.data._id, formData, config)
+            .then(res => { })
             .catch(err => { alert(err.message); })
+
+        window.location.assign("/categoria")
     }
 
     render() {
@@ -71,6 +84,16 @@ class Upload extends Component {
                     <div class="form-group">
                         <label >Descrição</label>
                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={this.actDescricao}></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label >Tipo de ficheiro</label>
+                        <select id="inputState" class="form-control" onChange={this.actTipo}>
+                            <option selected>Diga qual o tipo do seu ficheiro</option>
+                            <option>Documento</option>
+                            <option>Imagem</option>
+                            <option>Pasta Comprimida</option>
+                            <option>Outro</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="exampleFormControlFile1">Ficheiro</label>
