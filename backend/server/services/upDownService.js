@@ -1,12 +1,6 @@
 const bd = require("./../bd/sql");
 const uuid = require("uuid").v4;
 
-exports.testePromise = () => {
-    return new Promise((resolve, reject) => {
-        resolve("es estas ler isto esta tudo bem");
-    });
-}
-
 exports.inserirFicheiro = (idUser, body, file) => {
     const idFicheiro = uuid();
     const ficheiro = file.file;

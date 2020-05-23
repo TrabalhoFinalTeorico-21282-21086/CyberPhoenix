@@ -23,9 +23,14 @@ exports.mostrarUsers = (req, res) => {
         .catch(err => res.status(500).send(err.message));
 }
 
+exports.mostrarUserUnico = (req, res) => {
+    metodosBD.mostrarUserUnico(req.params.id)
+        .then(result => res.json(result))
+        .catch(err => res.status(500).send(err.message));
+}
+
 exports.apagarTudo = (req, res) => {
     metodosBD.apagartudo()
         .then(result => res.json(result))
         .catch(err => res.status(500).send(err.message));
 }
-

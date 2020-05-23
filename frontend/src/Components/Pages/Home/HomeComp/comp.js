@@ -9,7 +9,7 @@ function CarouselFunction() {
             <Carousel.Item>
                 <img
                     className="d-block w-100"
-                    src="Images/um.jpg"
+                    src="Images/d.jpg"
                     alt="First slide"
                 />
                 <Carousel.Caption>
@@ -20,7 +20,18 @@ function CarouselFunction() {
             <Carousel.Item>
                 <img
                     className="d-block w-100"
-                    src="Images/tres.jpg"
+                    src="Images/i.jpg"
+                    alt="Third slide"
+                />
+                <Carousel.Caption>
+                    <h3>Third slide label</h3>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                </Carousel.Caption>
+            </Carousel.Item>
+            <Carousel.Item>
+                <img
+                    className="d-block w-100"
+                    src="Images/p.jpg"
                     alt="Third slide"
                 />
                 <Carousel.Caption>

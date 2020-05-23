@@ -1,15 +1,12 @@
 import React, { Component } from "react";
 import Axios from "axios";
 import AuthContext from "../../Configs/authContext";
-import FilePage from "../FilePage/FilePage";
 
 class Categoria extends Component {
     static contextType = AuthContext;
     constructor(props) {
         super(props);
         this.state = {
-            cat: false,
-            idFich: null,
             fich: []
         }
     }
@@ -25,7 +22,7 @@ class Categoria extends Component {
     }
 
     change = (id) => {
-        this.setState({ cat: false, idFich: id });
+        window.location.assign("/Ficheiro/" + id);
     }
 
     login = () => {
@@ -36,42 +33,36 @@ class Categoria extends Component {
 
     render() {
         const { user } = this.context;
-        const { cat, idFich, fich } = this.state;
+        const { fich } = this.state;
         return (
             <div class="container">
-                {cat ?
-                    <div>
-                        <br />
-                        <h1>Pastas Comprimidas</h1>
-                        <br />
-                        <table class="table table-striped">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Titulo</th>
-                                    <th scope="col">Descrição</th>
-                                    <th scope="col">Tipo</th>
-                                    <th scope="col">Visualização</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {
-                                    fich.map((ficheiro) => {
-                                        return (
-                                            <tr>
-                                                <td>{ficheiro.nome}</td>
-                                                <td>{ficheiro.descricao.slice(0, 250)}</td>
-                                                <td>{ficheiro.tipoDeFicheiro}</td>
-                                                {user ? <button type="button" class="btn btn-outline-dark" onClick={() => this.change(ficheiro.idFicheiro)} >Ver</button> : <button type="button" class="btn btn-outline-dark disabled" onClick={this.login}>Ver</button>}
-                                            </tr>
-                                        )
-                                    })
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                    :
-                    <FilePage idFicheiro={idFich} pagina="CategoriaPastas" />
-                }
+                <br />
+                <h1>Pastas Comprimidas</h1>
+                <br />
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Descrição</th>
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Visualização</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            fich.map((ficheiro) => {
+                                return (
+                                    <tr>
+                                        <td>{ficheiro.nome}</td>
+                                        <td>{ficheiro.descricao.slice(0, 250)}</td>
+                                        <td>{ficheiro.tipoDeFicheiro}</td>
+                                        {user ? <button type="button" class="btn btn-outline-dark" onClick={() => this.change(ficheiro.idFicheiro)} >Ver</button> : <button type="button" class="btn btn-outline-dark disabled" onClick={this.login}>Ver</button>}
+                                    </tr>
+                                )
+                            })
+                        }
+                    </tbody>
+                </table>
             </div >);
     }
 }

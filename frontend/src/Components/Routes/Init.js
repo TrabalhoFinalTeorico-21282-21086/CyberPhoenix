@@ -12,6 +12,8 @@ import CategoriaOutros from "../Pages/Categories/CategoriaOutros";
 import Users from "../Pages/Users/Users";
 import AuthContext from "./../Configs/authContext"
 import Dropdown from "react-bootstrap/Dropdown";
+import FilePage from "../Pages/ApresentationPage/FilePage";
+import UserPage from "../Pages/ApresentationPage/UserPage"
 
 
 class Inicio extends React.Component {
@@ -32,10 +34,10 @@ class Inicio extends React.Component {
                             <Dropdown.Item href="/CategoriaGeral">Todos</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    {user && <Link className="navbar-brand " to="/utilizadores">Utilizadores</Link>}
-                    {user && <Link className="navbar-brand " to="/upload">Carregar Ficheiro</Link>}
-                    {!user && <Link className="navbar-brand " to="/registo">Registar</Link>}
-                    {!user ? <Link className="navbar-brand " to="/login">Login</Link> : <Link className="navbar-brand " to="/login" onClick={() => logout()}>Logout</Link>}
+                    {user && <Link className="navbar-brand " to="/Utilizadores">Utilizadores</Link>}
+                    {user && <Link className="navbar-brand " to="/Upload">Carregar Ficheiro</Link>}
+                    {!user && <Link className="navbar-brand " to="/Registo">Registar</Link>}
+                    {!user ? <Link className="navbar-brand " to="/Login">Login</Link> : <Link className="navbar-brand " to="/login" onClick={() => logout()}>Logout</Link>}
                 </nav>
                 <Switch>
                     <Route exact path="/"><Home /></Route>
@@ -44,10 +46,12 @@ class Inicio extends React.Component {
                     <Route path="/CategoriaImagens"><CategoriaImagens /></Route>
                     <Route path="/CategoriaPastas"><CategoriaPastas /></Route>
                     <Route path="/CategoriaOutros"><CategoriaOutros /></Route>
-                    <Route path="/registo"><Registar /></Route>
-                    <Route path="/login"><Login /></Route>
-                    <Route path="/upload"><Upload /></Route>
-                    <Route path="/utilizadores"><Users /></Route>
+                    <Route path="/Registo"><Registar /></Route>
+                    <Route path="/Login"><Login /></Route>
+                    <Route path="/Upload"><Upload /></Route>
+                    <Route path="/Utilizadores"><Users /></Route>
+                    <Route path="/Ficheiro/:id" component={FilePage} />
+                    <Route path="/Users/:id" component={UserPage} />
                 </Switch>
             </Router>
         );

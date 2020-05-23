@@ -31,7 +31,16 @@ exports.autenticar = (body) => {
 
 exports.mostrarUsers = () => {
     return new Promise((resolve, reject) => {
-        bd.all(`select * from users;`, (err, rows) => {
+        bd.all(`select idUser, username, descricao from users;`, (err, rows) => {
+            if (err) reject(err.message);
+            else resolve(rows);
+        });
+    });
+}
+
+exports.mostrarUserUnico = (id) => {
+    return new Promise((resolve, reject) => {
+        bd.get(`select username, descricao from users where idUser = ?;`, [id], (err, rows) => {
             if (err) reject(err.message);
             else resolve(rows);
         });
