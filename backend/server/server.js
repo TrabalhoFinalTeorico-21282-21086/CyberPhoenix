@@ -20,10 +20,9 @@ app.use("/updown", uploadDownload);
 app.use("/users", userRotas);
 app.use("/subscription", subs);
 app.use("/feedback", feed);
+app.get("/imagem/:id", (req, res) => { res.sendFile(__dirname + "/files/" + req.params.id) });
 
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
     console.log(`Server is listening on port ${port}`);
 });
-
-//https://www.w3schools.com/nodejs/nodejs_mysql.asp

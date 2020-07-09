@@ -1,10 +1,4 @@
-const metodosBD = require("./../services/upDownService");
-
-exports.teste = (req, res) => {
-    metodosBD.testePromise()
-        .then(result => res.json(result))
-        .catch(err => res.status(500).send(err.message));
-}
+const metodosBD = require("../services/upDownService");
 
 exports.inserirFicheiro = (req, res) => {
     metodosBD.inserirFicheiro(req.params.id, req.body, req.files)
@@ -12,9 +6,20 @@ exports.inserirFicheiro = (req, res) => {
         .catch(err => res.status(500).send(err.message));
 }
 
+exports.modificarFicheiro = (req, res) => {
+    metodosBD.modificarFicheiro(req.body)
+        .then(result => res.json(result))
+        .catch(err => res.status(500).send(err.message));
+}
+
+exports.apagarFicheiro = (req, res) => {
+    metodosBD.apagarFicheiro(req.body)
+        .then(result => res.json(result))
+        .catch(err => res.status(500).send(err.message));
+}
+
 exports.downloadFicheiro = (req, res) => {
     res.download(__dirname + "/../files/" + req.params.id, (err) => {
-        if (err) console.log("ocorreu um erro no download");
-        else console.log("download com sucesso");
+        if (err) console.log(err.message);
     });
 }

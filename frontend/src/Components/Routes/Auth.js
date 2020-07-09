@@ -20,6 +20,7 @@ export default class AuthComponent extends Component {
     logout = () => {
         sessionStorage.removeItem("user");
         this.setState({ user: undefined });
+        window.location.assign("/");
     }
 
     render() {

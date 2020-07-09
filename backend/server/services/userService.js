@@ -1,6 +1,7 @@
 const bd = require("./../bd/sql");
 const uuid = require("uuid").v4;
 const cifra = require("./../helpers/cifra");
+const fs = require("fs");
 
 exports.registar = (body) => {
     const id = uuid();
@@ -15,6 +16,30 @@ exports.registar = (body) => {
     });
 }
 
+exports.modificar = (body) => {
+    return new Promise((resolve, reject) => {
+        const dataiv = cifra.generateIv();
+        const pass = cifra.encrypt(body.pass, dataiv);
+        const email = cifra.encrypt(body.email, dataiv);
+        bd.run(`update users set username = ?, pass = ?, descricao = ?, email = ?, dataiv = ? where idUser = ?;`, [body.username, pass, body.descricao, email, dataiv, body.idUser], err => {
+            if (err) reject(err);
+            else resolve("success");
+        });
+    })
+}
+
+exports.modificarSuperior = (body) => {
+    return new Promise((resolve, reject) => {
+        const dataiv = cifra.generateIv();
+        const password = cifra.encrypt(body.pass, dataiv);
+        const email = cifra.encrypt(body.email, dataiv);
+        bd.run(`update users set username = ?, pass = ?, descricao = ?, email = ?, role = ?, dataiv = ? where idUser = ?;`, [body.username, password, body.descricao, email, body.role, dataiv, body.idUser], err => {
+            if (err) reject(err.message)
+            else resolve({ message: "success", role: body.role, _id: id });
+        });
+    })
+}
+
 exports.autenticar = (body) => {
     return new Promise((resolve, reject) => {
         bd.all(`select idUser, username, pass, dataiv, role from users`, (err, rows) => {
@@ -26,6 +51,36 @@ exports.autenticar = (body) => {
                 resolve({ message: "unsuccess" });
             }
         });
+    });
+}
+
+exports.apagarEspecifico = (id) => {
+    return new Promise((resolve, reject) => {
+        bd.run(`delete from subscriccao where quemSubcreveu = ? or quemFoiSubscrito = ?`, [id, id], (err) => {
+            if (err) reject(err);
+            else {
+                bd.all(`select * from ficheiro where idUser = ?;`, [id], (err, rows) => {
+                    if (err) reject(err);
+                    else {
+                        rows.forEach(element => {
+                            fs.unlink(__dirname + "/../files/" + element.localFicheiro, (err) => {
+                                if (err) reject(err);
+                            });
+                        });
+                    }
+                    bd.run(`delete from ficheiro where idUser = ?;`, [id], (err) => {
+                        if (err) reject(err);
+                        else {
+                            bd.run(`delete from users where idUser = ?;`, [id], (err) => {
+                                if (err) reject(err);
+                                else resolve({ message: "goodBye" });
+                            });
+                        }
+                    });
+                });
+            }
+        });
+
     });
 }
 

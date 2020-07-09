@@ -67,7 +67,7 @@ class Upload extends Component {
             .then(res => { })
             .catch(err => { alert(err.message); })
 
-        window.location.assign("/categoria")
+        window.location.assign("/MeMySelfAndI");
     }
 
     render() {

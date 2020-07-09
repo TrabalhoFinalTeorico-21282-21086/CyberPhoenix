@@ -41,14 +41,14 @@ class Login extends Component {
                 }
                 else alert("Username ou Password não verificam");
             })
-            .catch(err => { console.log(err); })
+            .catch(err => { alert("Olha, ouve um erro"); })
     }
 
     render() {
         return (
             <div class="container">
                 <br />
-                <h1>Login</h1>
+                <h1 class="display-4" >Login</h1>
                 <br />
                 <form onSubmit={this.submit}>
                     <div class="form-group">

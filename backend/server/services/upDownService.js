@@ -1,5 +1,6 @@
 const bd = require("./../bd/sql");
 const uuid = require("uuid").v4;
+const fs = require("fs");
 
 exports.inserirFicheiro = (idUser, body, file) => {
     const idFicheiro = uuid();
@@ -19,5 +20,34 @@ exports.inserirFicheiro = (idUser, body, file) => {
             }
         }
         );
+    });
+}
+
+exports.modificarFicheiro = (body) => {
+    return new Promise((resolve, reject) => {
+        bd.run(`update ficheiro set nome = ?, descricao = ? where idFicheiro = ?`, [body.nome, body.descricao, body.idFicheiro], (err) => {
+            if (err) reject(err.message);
+            else resolve("success");
+        })
+    })
+}
+
+exports.apagarFicheiro = (body) => {
+    return new Promise((resolve, reject) => {
+        bd.run(`delete from feedback where ficheiro like ?`, [body.idFicheiro], (err) => {
+            if (err) reject(err);
+            else {
+                bd.run(`delete from ficheiro where idFicheiro = ?`, [body.idFicheiro], (err) => {
+                    if (err) reject(err);
+                    else {
+                        fs.unlink(__dirname + "/../files/" + body.localFicheiro, (err) => {
+                            if (err) reject(err);
+                            else resolve("success");
+                        });
+                        resolve("success");
+                    }
+                });
+            }
+        })
     });
 }

@@ -30,18 +30,18 @@ exports.existeSubscricao = (body) => {
     });
 }
 
-exports.mostrarQuemSubscreveu = (body) => {
+exports.mostrarQuemSubscreveu = (id) => {
     return new Promise((resolve, reject) => {
-        bd.all(`select quemSubscreveu from subscriccao where quemFoiSubscrito = ?`, [body.quemFoiSubscrito], (err, rows) => {
+        bd.all(`select users.idUser, users.username, users.descricao from subscriccao, users where users.idUser = subscriccao.quemSubcreveu and subscriccao.quemFoiSubscrito = ?`, [id], (err, rows) => {
             if (err) reject(err.message);
             else resolve(rows);
         });
     });
 }
 
-exports.mostrarQuemFoiSubscrito = (body) => {
+exports.mostrarQuemFoiSubscrito = (id) => {
     return new Promise((resolve, reject) => {
-        bd.all(`select quemFoiSubscrito from subscriccao where quemSubscreveu = ?`, [body.quemSubcreveu], (err, rows) => {
+        bd.all(`select users.idUser, users.username, users.descricao from subscriccao, users where users.idUser = subscriccao.quemFoiSubscrito and quemSubcreveu = ?`, [id], (err, rows) => {
             if (err) reject(err.message);
             else resolve(rows);
         });

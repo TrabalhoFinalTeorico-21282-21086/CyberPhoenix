@@ -15,7 +15,7 @@ class Categoria extends Component {
         Axios.post("http://localhost:5000/ficheiro", { tipo: "Imagem" })
             .then(res => {
                 const data = res.data;
-                console.log(data);
+                data.reverse();
                 this.setState({ cat: true, fich: data })
             })
             .catch(err => { alert(err.message); })
@@ -27,8 +27,7 @@ class Categoria extends Component {
 
     login = () => {
         alert("Só é possivel aceder aos documentos com uma conta registada");
-        window.location.assign("/login");
-        console.log();
+        window.location.assign("/Login");
     }
 
     render() {
@@ -37,7 +36,7 @@ class Categoria extends Component {
         return (
             <div class="container">
                 <br />
-                <h1>Imagens</h1>
+                <h1 class="display-4">Imagens</h1>
                 <br />
                 <table class="table table-striped">
                     <thead>
@@ -56,7 +55,7 @@ class Categoria extends Component {
                                         <td>{ficheiro.nome}</td>
                                         <td>{ficheiro.descricao.slice(0, 250)}</td>
                                         <td>{ficheiro.tipoDeFicheiro}</td>
-                                        {user ? <button type="button" class="btn btn-outline-dark" onClick={() => this.change(ficheiro.idFicheiro)} >Ver</button> : <button type="button" class="btn btn-outline-dark disabled" onClick={this.login}>Ver</button>}
+                                        <td>{user ? <button type="button" class="btn btn-outline-dark" onClick={() => this.change(ficheiro.idFicheiro)} >Ver</button> : <button type="button" class="btn btn-outline-dark disabled" onClick={this.login}>Ver</button>}</td>
                                     </tr>
                                 )
                             })

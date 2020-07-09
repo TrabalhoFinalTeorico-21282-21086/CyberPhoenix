@@ -2,7 +2,7 @@ const bd = require("./../bd/sql");
 
 exports.mostrarFicheiroDeUmUser = (id) => {
     return new Promise((resolve, reject) => {
-        bd.all(`select idFicheiro, nome, descricao, tipoDeFicheiro from ficheiro where idUser = ?`, [id], (err, rows) => {
+        bd.all(`select idFicheiro, nome, descricao, tipoDeFicheiro, localFicheiro from ficheiro where idUser = ?`, [id], (err, rows) => {
             if (err) reject(err.message);
             else resolve(rows);
         })
@@ -35,7 +35,6 @@ exports.mostrarFicheiroUnico = (id) => {
         });
     });
 }
-
 
 exports.apagarFicheiros = () => {
     return new Promise((resolve, reject) => {

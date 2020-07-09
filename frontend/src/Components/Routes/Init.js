@@ -13,7 +13,13 @@ import Users from "../Pages/Users/Users";
 import AuthContext from "./../Configs/authContext"
 import Dropdown from "react-bootstrap/Dropdown";
 import FilePage from "../Pages/ApresentationPage/FilePage";
-import UserPage from "../Pages/ApresentationPage/UserPage"
+import UserPage from "../Pages/ApresentationPage/UserPage";
+import Eu from "../Pages/Users/Eu";
+import mostrarQuemSubscreveu from "../Pages/Subscricoes/QuemMeSubscreveu";
+import mostrarQuemFoiSubscrito from "../Pages/Subscricoes/QuemSubscrevi";
+import UpdateFile from "../Pages/Updates/UpdateFile";
+import UpdateUser from "../Pages/Updates/UpdateUser";
+import Certeza from "../Pages/Updates/Certeza";
 
 
 class Inicio extends React.Component {
@@ -34,10 +40,10 @@ class Inicio extends React.Component {
                             <Dropdown.Item href="/CategoriaGeral">Todos</Dropdown.Item>
                         </Dropdown.Menu>
                     </Dropdown>
-                    {user && <Link className="navbar-brand " to="/Utilizadores">Utilizadores</Link>}
-                    {user && <Link className="navbar-brand " to="/Upload">Carregar Ficheiro</Link>}
+                    {user && <Link className="navbar-brand " to="/Utilizadores">Outros Utilizadores</Link>}
+                    {user && <Link className="navbar-brand " to="/MeMySelfAndI">Minha Página</Link>}
                     {!user && <Link className="navbar-brand " to="/Registo">Registar</Link>}
-                    {!user ? <Link className="navbar-brand " to="/Login">Login</Link> : <Link className="navbar-brand " to="/login" onClick={() => logout()}>Logout</Link>}
+                    {!user ? <Link className="navbar-brand " to="/Login">Login</Link> : <Link className="navbar-brand" onClick={() => logout()}>Logout</Link>}
                 </nav>
                 <Switch>
                     <Route exact path="/"><Home /></Route>
@@ -52,6 +58,12 @@ class Inicio extends React.Component {
                     <Route path="/Utilizadores"><Users /></Route>
                     <Route path="/Ficheiro/:id" component={FilePage} />
                     <Route path="/Users/:id" component={UserPage} />
+                    <Route path="/MeMySelfAndI" component={Eu} />
+                    <Route path="/MostrarQuemSubscreveu/:id" component={mostrarQuemSubscreveu} />
+                    <Route path="/MostrarQuemFoiSubscrito/:id" component={mostrarQuemFoiSubscrito} />
+                    <Route path="/UpdateFile/:id" component={UpdateFile} />
+                    <Route path="/UpdateUser" component={UpdateUser} />
+                    <Route path="/DeleteUser" component={Certeza} />
                 </Switch>
             </Router>
         );

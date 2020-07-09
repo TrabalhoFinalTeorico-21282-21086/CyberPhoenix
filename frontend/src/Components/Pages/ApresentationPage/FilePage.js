@@ -64,6 +64,10 @@ class FilePage extends Component {
         window.open("http://localhost:5000/upDown/download/" + this.state.localFicheiro);
     }
 
+    verImagem = () => {
+        window.open("http://localhost:5000/imagem/" + this.state.localFicheiro);
+    }
+
     render() {
         const { nome, descricao, comentarios } = this.state;
         return (
@@ -74,7 +78,9 @@ class FilePage extends Component {
                 <br />
                 <p>{descricao}</p>
                 <br /><br /><br />
-                <button type="button" class="btn btn-secondary btn-lg" onClick={this.download}>Download</button>
+                <button type="button" class="btn btn-outline-primary btn-lg btn-block" onClick={this.download}>Download</button>
+                <br />
+                <button type="button" class="btn btn-outline-success btn-sm" onClick={this.verImagem}>Ver Imagem</button>
                 <br /><br /><br />
                 <form onSubmit={this.submit}>
                     <div class="input-group mb-3">

@@ -3,7 +3,7 @@ import Axios from "axios";
 import AuthContext from "../../Configs/authContext";
 
 
-class Users extends Component {
+class mostrarQuemFoiSubscrito extends Component {
     static contextType = AuthContext;
     constructor(props) {
         super(props);
@@ -18,7 +18,7 @@ class Users extends Component {
                 'Authorization': this.context.user.data.token,
             }
         }
-        Axios.get("http://localhost:5000/users", config)
+        Axios.get("http://localhost:5000/subscription//mostrarQuemFoiSubscrito/" + this.props.match.params.id, config)
             .then(res => {
                 const data = res.data;
                 this.setState({ cat: true, users: data })
@@ -30,18 +30,31 @@ class Users extends Component {
         window.location.assign("/Users/" + id);
     }
 
-    login = () => {
-        alert("Só é possivel aceder aos documentos com uma conta registada");
-        window.location.assign("/Login");
+    desSubscrever = (id) => {
+        const body = {
+            quemSubcreveu: this.context.user.data._id,
+            quemFoiSubscrito: id
+        }
+        const config = {
+            headers: {
+                'Authorization': this.context.user.data.token,
+            }
+        }
+        Axios.post("http://localhost:5000/subscription/delete", body, config)
+            .then(res => {
+                const data = res.data;
+                if (data === "unsuccess") alert("Esta subscrição já tinha sido removida");
+            })
+            .catch(err => { alert("Aconteceu um erro") });
+        window.location.assign("/MostrarQuemFoiSubscrito/" + this.props.match.params.id);
     }
-
 
     render() {
         const { users } = this.state;
         return (
             <div class="container">
                 <br />
-                <h1>Utilizadores</h1>
+                <h1>Quem Subscrevi</h1>
                 <br />
                 <table class="table table-striped">
                     <thead>
@@ -49,6 +62,7 @@ class Users extends Component {
                             <th scope="col">Username</th>
                             <th scope="col">Descrição</th>
                             <th scope="col">Visualização</th>
+                            <th scope="col">Apagar</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -58,7 +72,8 @@ class Users extends Component {
                                     <tr>
                                         <td>{username.username}</td>
                                         <td>{username.descricao.slice(0, 250)}</td>
-                                        <td><button type="button" class="btn btn-outline-dark" onClick={() => this.change(username.idUser)} >Ver</button></td>
+                                        <td><button type="button" class="btn btn-outline-dark" onClick={() => this.change(username.idUser)} >Ver Utilizador</button></td>
+                                        <td><button type="button" class="btn btn-danger" onClick={() => this.desSubscrever(username.idUser)} >Apagar Subscrição</button></td>
                                     </tr>
                                 )
                             })
@@ -71,4 +86,4 @@ class Users extends Component {
 
 }
 
-export default Users;
+export default mostrarQuemFoiSubscrito;

@@ -89,9 +89,6 @@ class FilePage extends Component {
         window.location.assign("/Ficheiro/" + id);
     }
 
-    voltar = () => {
-        window.location.assign("/" + this.props.pagina);
-    }
 
     render() {
         const { username, descricao, sub, fich } = this.state;
@@ -102,7 +99,7 @@ class FilePage extends Component {
                 <br /><br />
                 <p>{descricao}</p>
                 <br /><br /><br />
-                {!sub ? <button type="button" class="btn btn-secondary btn-lg" onClick={this.subscrever}>Subscrever</button> : <button type="button" class="btn btn-secondary btn-lg" onClick={this.desSubscrever}>Desubscrever</button>}
+                {!sub ? <button type="button" class="btn btn-outline-info btn-lg btn-block" onClick={this.subscrever}>Subscrever</button> : <button type="button" class="btn btn-outline-danger btn-lg btn-block" onClick={this.desSubscrever}>Apagar Subscrição</button>}
                 <br /><br /><br />
                 <h3>Ficheiros Carregados</h3>
                 <table class="table table-striped">
@@ -122,7 +119,7 @@ class FilePage extends Component {
                                         <td>{ficheiro.nome}</td>
                                         <td>{ficheiro.descricao.slice(0, 250)}</td>
                                         <td>{ficheiro.tipoDeFicheiro}</td>
-                                        <button type="button" class="btn btn-outline-dark" onClick={() => this.change(ficheiro.idFicheiro)} >Ver</button>
+                                        <td><button type="button" class="btn btn-outline-dark" onClick={() => this.change(ficheiro.idFicheiro)} >Ver</button></td>
                                     </tr>
                                 );
                             })
