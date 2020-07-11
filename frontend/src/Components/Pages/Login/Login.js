@@ -35,16 +35,20 @@ class Login extends Component {
         Axios.post("http://localhost:5000/users/autenticar", this.state)
             .then(res => {
                 const data = res.data;
-                data.message === "success" ? this.context.login({ username: this.state.username, data }) : alert("Username ou Password não verificam");
+                if (data.message === "success") {
+                    this.context.login({ username: this.state.username, data });
+                    window.location.assign("/");
+                }
+                else alert("Username ou Password não verificam");
             })
-            .catch(err => { console.log(err); })
+            .catch(err => { alert("Olha, ouve um erro"); })
     }
 
     render() {
         return (
             <div class="container">
                 <br />
-                <h1>Login</h1>
+                <h1 class="display-4" >Login</h1>
                 <br />
                 <form onSubmit={this.submit}>
                     <div class="form-group">
@@ -55,7 +59,7 @@ class Login extends Component {
                         <label >Password</label>
                         <input type="password" class="form-control" id="formGroupExampleInput2" placeholder={this.state.pass} onChange={this.actPass} ></input>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" class="btn btn-primary">Entrar</button>
                 </form>
             </div>
         );
@@ -63,5 +67,3 @@ class Login extends Component {
 }
 
 export default Login;
-
-//https://medium.com/@faizanv/authentication-for-your-react-and-express-application-w-json-web-tokens-923515826e0

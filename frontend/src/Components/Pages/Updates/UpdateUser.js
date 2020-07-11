@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Axios from "axios";
 import AuthContext from "./../../Configs/authContext"
 
-class Register extends Component {
+class UpdateUser extends Component {
     static contextType = AuthContext;
     constructor(props) {
         super(props);
@@ -49,20 +49,34 @@ class Register extends Component {
 
     submit = (event) => {
         event.preventDefault();
-        Axios.post("http://localhost:5000/users/registar", this.state)
+        const config = {
+            headers: {
+                'Authorization': this.context.user.data.token,
+            }
+        }
+        const body = {
+            username: this.state.username,
+            pass: this.state.pass,
+            descricao: this.state.descricao,
+            email: this.state.email,
+            idUser: this.context.user.data._id
+        }
+        Axios.post("http://localhost:5000/users/alterar", body, config)
             .then(res => {
                 const data = res.data;
-                this.context.login({ username: this.state.username, data });
-                window.location.assign("/");
+                console.log(data);
+                if (data !== "success") alert("Olha, houve um erro");
             })
             .catch(err => { alert("Username " + this.state.username + " já em uso"); })
+        window.location.assign("/MeMySelfAndI");
     }
 
     render() {
         return (
             <div class="container">
                 <br />
-                <h1 class="display-4" >Registar</h1>
+                <h1>Alterar Perfil</h1>
+                <br />
                 <form onSubmit={this.submit}>
                     <div class="form-group">
                         <label >Username</label>
@@ -80,11 +94,11 @@ class Register extends Component {
                         <label >Description</label>
                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" onChange={this.actDescricao}></textarea>
                     </div>
-                    <button type="submit" class="btn btn-primary">Registar</button>
+                    <button type="submit" class="btn btn-primary">Alterar</button>
                 </form>
             </div>
         );
     }
 }
 
-export default Register;
+export default UpdateUser;

@@ -18,26 +18,61 @@ bd.run(
         role int,
         dataiv varchar(250),
         primary key(idUser)
-    );
+    );`
+);
 
-    create table if not exists subscriccao(
+bd.run(
+    `create table if not exists ficheiro(
+        idFicheiro varchar(250),
+        idUser varchar(250) not null,
+        nome varchar(250),
+        descricao text(1000),
+        tipoDeFicheiro varchar(20),
+        localFicheiro varchar(255),
+        primary key(idFicheiro),
+        foreign key (idUser) references users(idUser)
+    );`
+);
+
+bd.run(
+    `create table if not exists subscriccao(
         quemSubcreveu varchar(250),
         quemFoiSubscrito varchar(250),
         primary key(quemFoiSubscrito, quemSubcreveu),
         foreign key(quemFoiSubscrito) references users(idUser),
         foreign key(quemSubcreveu) references users(idUser)
-    );
-    
+    );`
+);
+
+bd.run(
+    `   create table if not exists feedback(
+        idFB varchar(250) ,
+        idUser varchar(250) not null,
+        ficheiro varchar(250) not null,
+        comentario text(1000),
+        primary key(idFB),
+        foreign key(idUser) references users(idUser),
+        foreign key(ficheiro) references ficheiro(idFicheiro)
+    );`
+);
+
+//bd.run(`drop table feedback`);
+
+module.exports = bd;
+
+
+
+    /*
     create table if not exists enviada(
         idMens varchar(250),
-        idUser int not null,
+        idUser varchar(250) not null,
         primary key (idMens),
         foreign key(idUser) references users(idUser)
     );
     
     create table if not exists recebida(
         idMens varchar(250),
-        idUser int not null,
+        idUser varchar(250) not null,
         primary key (idMens),
         foreign key(idUser) references users(idUser)
     );
@@ -49,28 +84,4 @@ bd.run(
         vista enum("s", "n"),
         primary key(idMensagem)
     );
-
-    create table if not exists ficheiro(
-        idFicheiro varchar(250),
-        idUser int not null,
-        nome varchar(250),
-        decricao text(1000),
-        localFicheiro varchar(500),
-        primary key(idFicheiro),
-        foreign key (idUser) references users(idUser)
-    )engine = innodb;
-    
-    create table if not exists feedback(
-        idFB varchar(250),
-        idUser int not null,
-        ficheiro int not null,
-        comentario text(1000),
-        avaliacao int,
-        primary key(idFB),
-        foreign key(idUser) references users(idUser),
-        foreign key(ficheiro) references ficheiro(idFicheiro)
-    )engine = innodb;`
-);
-
-
-module.exports = bd;
+    */
