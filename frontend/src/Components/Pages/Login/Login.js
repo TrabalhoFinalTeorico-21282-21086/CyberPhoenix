@@ -8,7 +8,7 @@ class Login extends Component {
         super(props);
         this.state = {
             username: "username",
-            pass: "password"
+            pass: "password",
         };
     }
 
@@ -32,7 +32,8 @@ class Login extends Component {
     }
 
     submit = (event) => {
-        Axios.post("http://localhost:5000/users/autenticar", this.state)
+        event.preventDefault();
+        Axios.post("https://cyberpheonixback.eu-gb.mybluemix.net/users/autenticar", this.state)
             .then(res => {
                 const data = res.data;
                 if (data.message === "success") {

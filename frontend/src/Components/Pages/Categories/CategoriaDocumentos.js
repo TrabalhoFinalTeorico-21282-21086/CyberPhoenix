@@ -12,7 +12,7 @@ class Categoria extends Component {
     }
 
     componentDidMount = () => {
-        Axios.post("http://localhost:5000/ficheiro", { tipo: "Documento" })
+        Axios.post("https://cyberpheonixback.eu-gb.mybluemix.net/ficheiro", { tipo: "Documento" })
             .then(res => {
                 const data = res.data;
                 data.reverse();

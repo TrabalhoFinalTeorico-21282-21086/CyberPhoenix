@@ -18,7 +18,7 @@ class mostrarQuemFoiSubscrito extends Component {
                 'Authorization': this.context.user.data.token,
             }
         }
-        Axios.get("http://localhost:5000/subscription//mostrarQuemFoiSubscrito/" + this.props.match.params.id, config)
+        Axios.get("https://cyberpheonixback.eu-gb.mybluemix.net/subscription//mostrarQuemFoiSubscrito/" + this.props.match.params.id, config)
             .then(res => {
                 const data = res.data;
                 this.setState({ cat: true, users: data })
@@ -40,13 +40,13 @@ class mostrarQuemFoiSubscrito extends Component {
                 'Authorization': this.context.user.data.token,
             }
         }
-        Axios.post("http://localhost:5000/subscription/delete", body, config)
+        Axios.post("https://cyberpheonixback.eu-gb.mybluemix.net/subscription/delete", body, config)
             .then(res => {
                 const data = res.data;
                 if (data === "unsuccess") alert("Esta subscrição já tinha sido removida");
             })
-            .catch(err => { alert("Aconteceu um erro") });
-        window.location.assign("/MostrarQuemFoiSubscrito/" + this.props.match.params.id);
+            .catch(err => { alert("Aconteceu um erro") })
+            .finally(fin => { window.location.assign("/MostrarQuemFoiSubscrito/" + this.props.match.params.id) });
     }
 
     render() {

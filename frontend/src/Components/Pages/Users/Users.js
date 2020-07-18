@@ -18,7 +18,7 @@ class Users extends Component {
                 'Authorization': this.context.user.data.token,
             }
         }
-        Axios.get("http://localhost:5000/users", config)
+        Axios.get("https://cyberpheonixback.eu-gb.mybluemix.net/users", config)
             .then(res => {
                 const data = res.data;
                 this.setState({ cat: true, users: data })

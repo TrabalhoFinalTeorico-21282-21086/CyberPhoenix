@@ -9,7 +9,7 @@ class FilePage extends Component {
         this.state = {
             username: "",
             descricao: "",
-            sub: "ola",
+            sub: "",
             fich: []
         }
     }
@@ -20,14 +20,14 @@ class FilePage extends Component {
                 'Authorization': this.context.user.data.token,
             }
         }
-        Axios.get("http://localhost:5000/users/" + this.props.match.params.id, config)
+        Axios.get("https://cyberpheonixback.eu-gb.mybluemix.net/users/" + this.props.match.params.id, config)
             .then(res => {
                 const data = res.data;
                 this.setState({ username: data.username, descricao: data.descricao })
             })
             .catch(err => { alert("olha, ouve um erro") });
 
-        Axios.get("http://localhost:5000/ficheiro/fichUser/" + this.props.match.params.id, config)
+        Axios.get("https://cyberpheonixback.eu-gb.mybluemix.net/ficheiro/fichUser/" + this.props.match.params.id, config)
             .then(res => {
                 const data = res.data;
                 data.reverse();
@@ -39,7 +39,7 @@ class FilePage extends Component {
             quemSubcreveu: this.context.user.data._id,
             quemFoiSubscrito: this.props.match.params.id,
         }
-        Axios.post("http://localhost:5000/subscription/subPart/", body, config)
+        Axios.post("https://cyberpheonixback.eu-gb.mybluemix.net/subscription/subPart/", body, config)
             .then(res => {
                 const data = res.data;
                 this.setState({ sub: data });
@@ -57,13 +57,14 @@ class FilePage extends Component {
                 'Authorization': this.context.user.data.token,
             }
         }
-        Axios.post("http://localhost:5000/subscription/add", body, config)
+        Axios.post("https://cyberpheonixback.eu-gb.mybluemix.net/subscription/add", body, config)
             .then(res => {
                 const data = res.data;
                 if (data === "unsuccess") alert("Este utilizador já tinha sido subscrito");
             })
-            .catch(err => { alert("Aconteceu um erro") });
-        window.location.assign("/Users/" + this.props.match.params.id);
+            .catch(err => { alert("Aconteceu um erro") })
+            .finally(fin => { window.location.assign("/Users/" + this.props.match.params.id); })
+
     }
 
     desSubscrever = () => {
@@ -76,13 +77,14 @@ class FilePage extends Component {
                 'Authorization': this.context.user.data.token,
             }
         }
-        Axios.post("http://localhost:5000/subscription/delete", body, config)
+        Axios.post("https://cyberpheonixback.eu-gb.mybluemix.net/subscription/delete", body, config)
             .then(res => {
                 const data = res.data;
                 if (data === "unsuccess") alert("Esta subscrição já tinha sido removida");
             })
-            .catch(err => { alert("Aconteceu um erro") });
-        window.location.assign("/Users/" + this.props.match.params.id);
+            .catch(err => { alert("Aconteceu um erro") })
+            .finally(fin => { window.location.assign("/Users/" + this.props.match.params.id); });
+
     }
 
     change = (id) => {

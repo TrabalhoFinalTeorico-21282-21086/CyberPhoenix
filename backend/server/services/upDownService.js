@@ -2,6 +2,8 @@ const bd = require("./../bd/sql");
 const uuid = require("uuid").v4;
 const fs = require("fs");
 
+
+//insere de dados a entrada de um novo ficheiro e cria o ficheiro na pasta files
 exports.inserirFicheiro = (idUser, body, file) => {
     const idFicheiro = uuid();
     const ficheiro = file.file;
@@ -32,6 +34,7 @@ exports.modificarFicheiro = (body) => {
     })
 }
 
+//em primeiro apaga todos os comentarios relacionados ao ficheiro e depois sim apaga o a entrada na base de dados do ficheiro
 exports.apagarFicheiro = (body) => {
     return new Promise((resolve, reject) => {
         bd.run(`delete from feedback where ficheiro like ?`, [body.idFicheiro], (err) => {
