@@ -1,3 +1,4 @@
+//papeis defenidos para 
 module.exports = {
     anonimo: 1,
     funcionario: 2,

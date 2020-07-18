@@ -1,6 +1,7 @@
 const sqlite3 = require("sqlite3");
 const path = require("path");
 
+//reconhece o ficheiro existente da base de dados, se não existir cria um proprio e cria o objecto bd(base de dados)
 const bd = new sqlite3.Database(path.join(__dirname, "/database.db"), sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
     (err) => {
         if (err) console.error(err.message);
@@ -8,6 +9,7 @@ const bd = new sqlite3.Database(path.join(__dirname, "/database.db"), sqlite3.OP
     }
 );
 
+//criação das tabelas necessárias para a execução do backend do website
 bd.run(
     `create table if not exists users(
         idUser varchar(250),
@@ -56,32 +58,4 @@ bd.run(
     );`
 );
 
-//bd.run(`drop table feedback`);
-
 module.exports = bd;
-
-
-
-    /*
-    create table if not exists enviada(
-        idMens varchar(250),
-        idUser varchar(250) not null,
-        primary key (idMens),
-        foreign key(idUser) references users(idUser)
-    );
-    
-    create table if not exists recebida(
-        idMens varchar(250),
-        idUser varchar(250) not null,
-        primary key (idMens),
-        foreign key(idUser) references users(idUser)
-    );
-    
-    create table if not exists mensagem(
-        idMensagem varchar(250),
-        texto text(2000) not null,
-        dataEnviada date,
-        vista enum("s", "n"),
-        primary key(idMensagem)
-    );
-    */

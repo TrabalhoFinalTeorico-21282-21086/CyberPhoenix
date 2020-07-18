@@ -22,14 +22,14 @@ class FilePage extends Component {
             }
         }
 
-        Axios.get("http://localhost:5000/ficheiro/" + this.props.match.params.id, config)
+        Axios.get("https://cyberpheonixback.eu-gb.mybluemix.net/ficheiro/" + this.props.match.params.id, config)
             .then(res => {
                 const data = res.data;
                 this.setState({ nome: data.nome, descricao: data.descricao, localFicheiro: data.localFicheiro });
             })
             .catch(err => { console.log(err.message) })
 
-        Axios.get("http://localhost:5000/feedback/" + this.props.match.params.id, config)
+        Axios.get("https://cyberpheonixback.eu-gb.mybluemix.net/feedback/" + this.props.match.params.id, config)
             .then(res => {
                 const data = res.data;
                 data.reverse();
@@ -42,7 +42,8 @@ class FilePage extends Component {
         this.setState({ meuComent: event.target.value });
     }
 
-    submit = () => {
+    submit = (event) => {
+        event.preventDefault();
         if (this.state.meuComent !== "") {
             const config = {
                 headers: {
@@ -54,18 +55,18 @@ class FilePage extends Component {
                 ficheiro: this.props.match.params.id,
                 comentario: this.state.meuComent
             }
-            Axios.post("http://localhost:5000/feedback", com, config)
-                .then(res => { console.log("vai ver ao postman se esta inserido") })
+            Axios.post("https://cyberpheonixback.eu-gb.mybluemix.net/feedback", com, config)
+                .then(res => { window.location.assign("/Ficheiro/" + this.props.match.params.id); })
                 .catch(err => { console.log(err.message) })
         }
     }
 
     download = () => {
-        window.open("http://localhost:5000/upDown/download/" + this.state.localFicheiro);
+        window.open("https://cyberpheonixback.eu-gb.mybluemix.net/upDown/download/" + this.state.localFicheiro);
     }
 
     verImagem = () => {
-        window.open("http://localhost:5000/imagem/" + this.state.localFicheiro);
+        window.open("https://cyberpheonixback.eu-gb.mybluemix.net/imagem/" + this.state.localFicheiro);
     }
 
     render() {
@@ -80,7 +81,7 @@ class FilePage extends Component {
                 <br /><br /><br />
                 <button type="button" class="btn btn-outline-primary btn-lg btn-block" onClick={this.download}>Download</button>
                 <br />
-                <button type="button" class="btn btn-outline-success btn-sm" onClick={this.verImagem}>Ver Imagem</button>
+                <button type="button" class="btn btn-outline-success btn-sm" onClick={this.verImagem}>Sentir de perto</button>
                 <br /><br /><br />
                 <form onSubmit={this.submit}>
                     <div class="input-group mb-3">

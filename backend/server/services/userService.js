@@ -54,6 +54,7 @@ exports.autenticar = (body) => {
     });
 }
 
+//apaga todos os ficheiros, subscrições do utilizador que vai ser apagado
 exports.apagarEspecifico = (id) => {
     return new Promise((resolve, reject) => {
         bd.run(`delete from subscriccao where quemSubcreveu = ? or quemFoiSubscrito = ?`, [id, id], (err) => {

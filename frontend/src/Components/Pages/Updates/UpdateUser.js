@@ -61,14 +61,14 @@ class UpdateUser extends Component {
             email: this.state.email,
             idUser: this.context.user.data._id
         }
-        Axios.post("http://localhost:5000/users/alterar", body, config)
+        Axios.post("https://cyberpheonixback.eu-gb.mybluemix.net/users/alterar", body, config)
             .then(res => {
                 const data = res.data;
                 console.log(data);
                 if (data !== "success") alert("Olha, houve um erro");
             })
             .catch(err => { alert("Username " + this.state.username + " já em uso"); })
-        window.location.assign("/MeMySelfAndI");
+            .finally(fin => { window.location.assign("/MeMySelfAndI"); })
     }
 
     render() {

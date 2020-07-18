@@ -20,14 +20,14 @@ class Eu extends Component {
                 'Authorization': this.context.user.data.token,
             }
         }
-        Axios.get("http://localhost:5000/users/" + this.context.user.data._id, config)
+        Axios.get("https://cyberpheonixback.eu-gb.mybluemix.net/users/" + this.context.user.data._id, config)
             .then(res => {
                 const data = res.data;
                 this.setState({ username: data.username, descricao: data.descricao })
             })
             .catch(err => { alert("olha, ouve um erro") });
 
-        Axios.get("http://localhost:5000/ficheiro/fichUser/" + this.context.user.data._id, config)
+        Axios.get("https://cyberpheonixback.eu-gb.mybluemix.net/ficheiro/fichUser/" + this.context.user.data._id, config)
             .then(res => {
                 const data = res.data;
                 data.reverse();
@@ -53,13 +53,13 @@ class Eu extends Component {
                 'Authorization': this.context.user.data.token,
             }
         }
-        Axios.post("http://localhost:5000/updown/delete", fich, config)
+        Axios.post("https://cyberpheonixback.eu-gb.mybluemix.net/updown/delete", fich, config)
             .then(res => {
                 const data = res.data;
                 if (data !== "success") alert("Olha, deu um erro");
             })
             .catch(err => { alert("Olha, deu um erro"); })
-        window.location.assign("/MeMySelfAndI");
+            .finally(fin => { window.location.assign("/MeMySelfAndI"); });
     }
 
     carregarFicheiro = () => {

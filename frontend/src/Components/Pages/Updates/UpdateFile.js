@@ -46,14 +46,14 @@ class UpdateFile extends Component {
             descricao: this.state.descricao,
             idFicheiro: this.props.match.params.id
         }
-        Axios.post("http://localhost:5000/updown/update", body, config)
+        Axios.post("https://cyberpheonixback.eu-gb.mybluemix.net/updown/update", body, config)
             .then(res => {
                 const data = res.data;
                 if (data === "success") alert("Ficheiro Modificado com sucesso");
             })
             .catch(err => { alert("Olha, houve um erro"); })
+            .finally(fin => { window.location.assign("/MeMySelfAndI"); })
 
-        window.location.assign("/MeMySelfAndI");
     }
 
     render() {

@@ -12,7 +12,7 @@ class Categoria extends Component {
     }
 
     componentDidMount = () => {
-        Axios.get("http://localhost:5000/ficheiro")
+        Axios.get("https://cyberpheonixback.eu-gb.mybluemix.net/ficheiro")
             .then(res => {
                 const data = res.data;
                 data.reverse();

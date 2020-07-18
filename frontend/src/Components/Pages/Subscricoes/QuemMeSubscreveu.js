@@ -18,7 +18,7 @@ class mostrarQuemSubscreveu extends Component {
                 'Authorization': this.context.user.data.token,
             }
         }
-        Axios.get("http://localhost:5000/subscription/mostrarQuemSubscreveu/" + this.props.match.params.id, config)
+        Axios.get("https://cyberpheonixback.eu-gb.mybluemix.net/subscription/mostrarQuemSubscreveu/" + this.props.match.params.id, config)
             .then(res => {
                 const data = res.data;
                 this.setState({ cat: true, users: data })
