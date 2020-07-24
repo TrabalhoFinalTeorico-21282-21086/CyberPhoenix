@@ -1,5 +1,7 @@
 const jwt = require("../helpers/jwt");
 
+
+//verifica se o token que entra é valido e se tem os "roles necessários para aceder a rota especifica"
 module.exports = (...roles) => {
     return (req, res, next) => {
         if (req.headers.authorization) {

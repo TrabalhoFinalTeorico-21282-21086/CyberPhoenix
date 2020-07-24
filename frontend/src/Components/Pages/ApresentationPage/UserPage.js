@@ -9,7 +9,7 @@ class FilePage extends Component {
         this.state = {
             username: "",
             descricao: "",
-            sub: "ola",
+            sub: "",
             fich: []
         }
     }
@@ -22,7 +22,7 @@ class FilePage extends Component {
         }
         Axios.get("http://localhost:5000/users/" + this.props.match.params.id, config)
             .then(res => {
-                const data = res.data;
+                const data = res.data[0];
                 this.setState({ username: data.username, descricao: data.descricao })
             })
             .catch(err => { alert("olha, ouve um erro") });
@@ -62,8 +62,9 @@ class FilePage extends Component {
                 const data = res.data;
                 if (data === "unsuccess") alert("Este utilizador já tinha sido subscrito");
             })
-            .catch(err => { alert("Aconteceu um erro") });
-        window.location.assign("/Users/" + this.props.match.params.id);
+            .catch(err => { alert("Aconteceu um erro") })
+            .finally(fin => { window.location.assign("/Users/" + this.props.match.params.id); })
+
     }
 
     desSubscrever = () => {
@@ -81,8 +82,9 @@ class FilePage extends Component {
                 const data = res.data;
                 if (data === "unsuccess") alert("Esta subscrição já tinha sido removida");
             })
-            .catch(err => { alert("Aconteceu um erro") });
-        window.location.assign("/Users/" + this.props.match.params.id);
+            .catch(err => { alert("Aconteceu um erro") })
+            .finally(fin => { window.location.assign("/Users/" + this.props.match.params.id); });
+
     }
 
     change = (id) => {

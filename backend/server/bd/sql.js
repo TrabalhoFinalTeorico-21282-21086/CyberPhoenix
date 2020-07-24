@@ -1,14 +1,37 @@
 const sqlite3 = require("sqlite3");
 const path = require("path");
+const mysql = require('mysql');
 
-const bd = new sqlite3.Database(path.join(__dirname, "/database.db"), sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
+//reconhece o ficheiro existente da base de dados, se não existir cria um proprio e cria o objecto bd(base de dados)
+/*const bd = new sqlite3.Database(path.join(__dirname, "/database.db"), sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
     (err) => {
         if (err) console.error(err.message);
         else console.log("Connected to the sqlite database");
     }
-);
+);*/
 
-bd.run(
+
+const bd = mysql.createConnection({
+    host: '192.168.56.1',
+    user: 'admin',
+    password: 'admin',
+    database: 'CyberPheonix'
+}, (err) => {
+    if (err) console.log(err);
+});
+
+
+bd.connect(function (err) {
+    if (err) {
+        console.error('error connecting: ' + err.stack);
+        return;
+    }
+    console.log('Connected to the Mysql database');
+});
+
+
+//criação das tabelas necessárias para a execução do backend do website
+bd.query(
     `create table if not exists users(
         idUser varchar(250),
         username varchar(250) not null unique,
@@ -21,7 +44,7 @@ bd.run(
     );`
 );
 
-bd.run(
+bd.query(
     `create table if not exists ficheiro(
         idFicheiro varchar(250),
         idUser varchar(250) not null,
@@ -34,7 +57,7 @@ bd.run(
     );`
 );
 
-bd.run(
+bd.query(
     `create table if not exists subscriccao(
         quemSubcreveu varchar(250),
         quemFoiSubscrito varchar(250),
@@ -44,7 +67,7 @@ bd.run(
     );`
 );
 
-bd.run(
+bd.query(
     `   create table if not exists feedback(
         idFB varchar(250) ,
         idUser varchar(250) not null,
@@ -56,32 +79,6 @@ bd.run(
     );`
 );
 
-//bd.run(`drop table feedback`);
-
 module.exports = bd;
 
-
-
-    /*
-    create table if not exists enviada(
-        idMens varchar(250),
-        idUser varchar(250) not null,
-        primary key (idMens),
-        foreign key(idUser) references users(idUser)
-    );
-    
-    create table if not exists recebida(
-        idMens varchar(250),
-        idUser varchar(250) not null,
-        primary key (idMens),
-        foreign key(idUser) references users(idUser)
-    );
-    
-    create table if not exists mensagem(
-        idMensagem varchar(250),
-        texto text(2000) not null,
-        dataEnviada date,
-        vista enum("s", "n"),
-        primary key(idMensagem)
-    );
-    */
+//https://www.youtube.com/watch?v=EN6Dx22cPRI

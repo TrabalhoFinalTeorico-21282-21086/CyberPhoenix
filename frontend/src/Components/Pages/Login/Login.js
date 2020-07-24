@@ -8,7 +8,7 @@ class Login extends Component {
         super(props);
         this.state = {
             username: "username",
-            pass: "password"
+            pass: "password",
         };
     }
 
@@ -32,6 +32,7 @@ class Login extends Component {
     }
 
     submit = (event) => {
+        event.preventDefault();
         Axios.post("http://localhost:5000/users/autenticar", this.state)
             .then(res => {
                 const data = res.data;

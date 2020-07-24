@@ -52,8 +52,8 @@ class UpdateFile extends Component {
                 if (data === "success") alert("Ficheiro Modificado com sucesso");
             })
             .catch(err => { alert("Olha, houve um erro"); })
+            .finally(fin => { window.location.assign("/MeMySelfAndI"); })
 
-        window.location.assign("/MeMySelfAndI");
     }
 
     render() {

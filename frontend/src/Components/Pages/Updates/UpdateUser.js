@@ -68,7 +68,7 @@ class UpdateUser extends Component {
                 if (data !== "success") alert("Olha, houve um erro");
             })
             .catch(err => { alert("Username " + this.state.username + " já em uso"); })
-        window.location.assign("/MeMySelfAndI");
+            .finally(fin => { window.location.assign("/MeMySelfAndI"); })
     }
 
     render() {

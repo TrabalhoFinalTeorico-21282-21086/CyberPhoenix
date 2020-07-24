@@ -2,7 +2,7 @@ const bd = require("./../bd/sql");
 
 exports.mostrarFicheiroDeUmUser = (id) => {
     return new Promise((resolve, reject) => {
-        bd.all(`select idFicheiro, nome, descricao, tipoDeFicheiro, localFicheiro from ficheiro where idUser = ?`, [id], (err, rows) => {
+        bd.query(`select idFicheiro, nome, descricao, tipoDeFicheiro, localFicheiro from ficheiro where idUser = ?`, [id], (err, rows) => {
             if (err) reject(err.message);
             else resolve(rows);
         })
@@ -11,7 +11,7 @@ exports.mostrarFicheiroDeUmUser = (id) => {
 
 exports.mostrarFicheirosCategorizados = (body) => {
     return new Promise((resolve, reject) => {
-        bd.all(`select idFicheiro, nome, descricao, tipoDeFicheiro from ficheiro where tipoDeFicheiro = ?`, [body.tipo], (err, rows) => {
+        bd.query(`select idFicheiro, nome, descricao, tipoDeFicheiro from ficheiro where tipoDeFicheiro = ?`, [body.tipo], (err, rows) => {
             if (err) reject({ err });
             else resolve(rows);
         });
@@ -20,7 +20,7 @@ exports.mostrarFicheirosCategorizados = (body) => {
 
 exports.mostrarFicheiros = () => {
     return new Promise((resolve, reject) => {
-        bd.all(`select idFicheiro, nome, descricao, tipoDeFicheiro from ficheiro`, (err, rows) => {
+        bd.query(`select idFicheiro, nome, descricao, tipoDeFicheiro from ficheiro`, (err, rows) => {
             if (err) reject({ err });
             else resolve(rows);
         });
@@ -29,7 +29,7 @@ exports.mostrarFicheiros = () => {
 
 exports.mostrarFicheiroUnico = (id) => {
     return new Promise((resolve, reject) => {
-        bd.get(`select * from ficheiro where idFicheiro = ?`, [id], (err, row) => {
+        bd.query(`select * from ficheiro where idFicheiro = ?`, [id], (err, row) => {
             if (err) reject(err);
             else resolve(row);
         });
@@ -38,7 +38,7 @@ exports.mostrarFicheiroUnico = (id) => {
 
 exports.apagarFicheiros = () => {
     return new Promise((resolve, reject) => {
-        bd.run(`delete  from ficheiro;`, (err, rows) => {
+        bd.query(`delete  from ficheiro;`, (err, rows) => {
             if (err) reject({ err });
             else resolve(rows);
         });

@@ -9,7 +9,7 @@ exports.registar = (body) => {
         const dataiv = cifra.generateIv();
         const password = cifra.encrypt(body.pass, dataiv);
         const email = cifra.encrypt(body.email, dataiv);
-        bd.run(`insert into users(idUser, username, pass, descricao, email, role, dataiv) values(?, ?, ?, ?, ?, ?, ?);`, [id, body.username, password, body.descricao, email, 1, dataiv], err => {
+        bd.query(`insert into users(idUser, username, pass, descricao, email, role, dataiv) values(?, ?, ?, ?, ?, ?, ?);`, [id, body.username, password, body.descricao, email, 1, dataiv], err => {
             if (err) reject({ message: "unsuccess" })
             else resolve({ message: "success", role: 1, _id: id });
         });
@@ -21,7 +21,7 @@ exports.modificar = (body) => {
         const dataiv = cifra.generateIv();
         const pass = cifra.encrypt(body.pass, dataiv);
         const email = cifra.encrypt(body.email, dataiv);
-        bd.run(`update users set username = ?, pass = ?, descricao = ?, email = ?, dataiv = ? where idUser = ?;`, [body.username, pass, body.descricao, email, dataiv, body.idUser], err => {
+        bd.query(`update users set username = ?, pass = ?, descricao = ?, email = ?, dataiv = ? where idUser = ?;`, [body.username, pass, body.descricao, email, dataiv, body.idUser], err => {
             if (err) reject(err);
             else resolve("success");
         });
@@ -33,7 +33,7 @@ exports.modificarSuperior = (body) => {
         const dataiv = cifra.generateIv();
         const password = cifra.encrypt(body.pass, dataiv);
         const email = cifra.encrypt(body.email, dataiv);
-        bd.run(`update users set username = ?, pass = ?, descricao = ?, email = ?, role = ?, dataiv = ? where idUser = ?;`, [body.username, password, body.descricao, email, body.role, dataiv, body.idUser], err => {
+        bd.query(`update users set username = ?, pass = ?, descricao = ?, email = ?, role = ?, dataiv = ? where idUser = ?;`, [body.username, password, body.descricao, email, body.role, dataiv, body.idUser], err => {
             if (err) reject(err.message)
             else resolve({ message: "success", role: body.role, _id: id });
         });
@@ -42,7 +42,7 @@ exports.modificarSuperior = (body) => {
 
 exports.autenticar = (body) => {
     return new Promise((resolve, reject) => {
-        bd.all(`select idUser, username, pass, dataiv, role from users`, (err, rows) => {
+        bd.query(`select idUser, username, pass, dataiv, role from users`, (err, rows) => {
             if (err) reject(err.message);
             else {
                 rows.forEach(element => {
@@ -54,28 +54,34 @@ exports.autenticar = (body) => {
     });
 }
 
+//apaga todos os ficheiros, subscrições, comentarios do utilizador que vai ser apagado
 exports.apagarEspecifico = (id) => {
     return new Promise((resolve, reject) => {
-        bd.run(`delete from subscriccao where quemSubcreveu = ? or quemFoiSubscrito = ?`, [id, id], (err) => {
+        bd.query(`delete from subscriccao where quemSubcreveu = ? or quemFoiSubscrito = ?`, [id, id], (err) => {
             if (err) reject(err);
             else {
-                bd.all(`select * from ficheiro where idUser = ?;`, [id], (err, rows) => {
-                    if (err) reject(err);
-                    else {
-                        rows.forEach(element => {
-                            fs.unlink(__dirname + "/../files/" + element.localFicheiro, (err) => {
-                                if (err) reject(err);
-                            });
-                        });
-                    }
-                    bd.run(`delete from ficheiro where idUser = ?;`, [id], (err) => {
+                bd.query(`delete from feedback where idUser = ?;`, [id], (err) => {
+                    bd.query(`select * from ficheiro where idUser = ?;`, [id], (err, rows) => {
                         if (err) reject(err);
                         else {
-                            bd.run(`delete from users where idUser = ?;`, [id], (err) => {
-                                if (err) reject(err);
-                                else resolve({ message: "goodBye" });
+                            rows.forEach(element => {
+                                bd.query(`delete from feedback where ficheiro = ?;`, [element.idFicheiro], (err) => {
+                                    if (err) reject(err);
+                                    fs.unlink(__dirname + "/../files/" + element.localFicheiro, (err) => {
+                                        if (err) reject(err);
+                                    });
+                                });
                             });
                         }
+                        bd.query(`delete from ficheiro where idUser = ?;`, [id], (err) => {
+                            if (err) reject(err);
+                            else {
+                                bd.query(`delete from users where idUser = ?;`, [id], (err) => {
+                                    if (err) reject(err);
+                                    else resolve({ message: "goodBye" });
+                                });
+                            }
+                        });
                     });
                 });
             }
@@ -86,7 +92,7 @@ exports.apagarEspecifico = (id) => {
 
 exports.mostrarUsers = () => {
     return new Promise((resolve, reject) => {
-        bd.all(`select idUser, username, descricao from users;`, (err, rows) => {
+        bd.query(`select idUser, username, descricao from users;`, (err, rows) => {
             if (err) reject(err.message);
             else resolve(rows);
         });
@@ -95,7 +101,7 @@ exports.mostrarUsers = () => {
 
 exports.mostrarUserUnico = (id) => {
     return new Promise((resolve, reject) => {
-        bd.get(`select username, descricao from users where idUser = ?;`, [id], (err, rows) => {
+        bd.query(`select username, descricao from users where idUser = ?;`, [id], (err, rows) => {
             if (err) reject(err.message);
             else resolve(rows);
         });
@@ -104,7 +110,7 @@ exports.mostrarUserUnico = (id) => {
 
 exports.apagartudo = () => {
     return new Promise((resolve, reject) => {
-        bd.run(`delete from users;`, (err) => {
+        bd.query(`delete from users;`, (err) => {
             if (err) reject(err.message);
             else resolve({ message: "everything was erase" });
         });

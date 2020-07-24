@@ -33,7 +33,6 @@ class Upload extends Component {
         this.setState({
             descricao: event.target.value
         });
-        console.log(this.state);
     }
 
     actTipo = (event) => {
@@ -63,11 +62,12 @@ class Upload extends Component {
                 'content-type': 'multipart/form-data'
             }
         }
+        event.preventDefault();
         Axios.post("http://localhost:5000/updown/upload/" + this.context.user.data._id, formData, config)
             .then(res => { })
             .catch(err => { alert(err.message); })
+            .finally(fin => { window.location.assign("/MeMySelfAndI"); })
 
-        window.location.assign("/MeMySelfAndI");
     }
 
     render() {

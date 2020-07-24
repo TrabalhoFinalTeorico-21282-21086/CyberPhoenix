@@ -5,7 +5,7 @@ const roles = require("../helpers/rolls");
 
 
 router.post("/registar", controller.registar);
-router.post("/alterar", controller.modificar);
+router.post("/alterar", authorize(roles.gestor, roles.funcionario, roles.anonimo), controller.modificar);
 router.post("/autenticar", controller.autenticar);
 router.get("/", authorize(roles.gestor, roles.funcionario, roles.anonimo), controller.mostrarUsers);
 router.get("/:id", authorize(roles.gestor, roles.funcionario, roles.anonimo), controller.mostrarUserUnico);

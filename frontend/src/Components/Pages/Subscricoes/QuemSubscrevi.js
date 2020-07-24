@@ -45,8 +45,8 @@ class mostrarQuemFoiSubscrito extends Component {
                 const data = res.data;
                 if (data === "unsuccess") alert("Esta subscrição já tinha sido removida");
             })
-            .catch(err => { alert("Aconteceu um erro") });
-        window.location.assign("/MostrarQuemFoiSubscrito/" + this.props.match.params.id);
+            .catch(err => { alert("Aconteceu um erro") })
+            .finally(fin => { window.location.assign("/MostrarQuemFoiSubscrito/" + this.props.match.params.id) });
     }
 
     render() {

@@ -22,7 +22,7 @@ class Eu extends Component {
         }
         Axios.get("http://localhost:5000/users/" + this.context.user.data._id, config)
             .then(res => {
-                const data = res.data;
+                const data = res.data[0];
                 this.setState({ username: data.username, descricao: data.descricao })
             })
             .catch(err => { alert("olha, ouve um erro") });
@@ -59,7 +59,7 @@ class Eu extends Component {
                 if (data !== "success") alert("Olha, deu um erro");
             })
             .catch(err => { alert("Olha, deu um erro"); })
-        window.location.assign("/MeMySelfAndI");
+            .finally(fin => { window.location.assign("/MeMySelfAndI"); });
     }
 
     carregarFicheiro = () => {
