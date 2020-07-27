@@ -1,4 +1,5 @@
 const metodosBD = require("../services/upDownService");
+const mc = require("../bd/minIO");
 //chama o serviço que insere um novo ficheiro na db
 exports.inserirFicheiro = (req, res) => {
     metodosBD.inserirFicheiro(req.params.id, req.body, req.files)
@@ -22,4 +23,11 @@ exports.downloadFicheiro = (req, res) => {
     res.download(__dirname + "/../files/" + req.params.id, (err) => {
         if (err) console.log(err.message);
     });
+
+    /*mC.fGetObject('mybucket', 'photo.jpg', '/tmp/photo.jpg', function (err) {
+        if (err) {
+            return console.log(err)
+        }
+        console.log('success')
+    }*/
 }

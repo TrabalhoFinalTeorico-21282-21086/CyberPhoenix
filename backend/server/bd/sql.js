@@ -1,6 +1,8 @@
-const sqlite3 = require("sqlite3");
+//const sqlite3 = require("sqlite3");
 const path = require("path");
 const mysql = require('mysql');
+
+
 
 //reconhece o ficheiro existente da base de dados, se não existir cria um proprio e cria o objecto bd(base de dados)
 /*const bd = new sqlite3.Database(path.join(__dirname, "/database.db"), sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,

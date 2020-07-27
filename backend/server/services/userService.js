@@ -1,7 +1,8 @@
-const bd = require("./../bd/sql");
+const bd = require("../bd/sql");
 const uuid = require("uuid").v4;
 const cifra = require("./../helpers/cifra");
 const fs = require("fs");
+const mC = require("../bd/minIO");
 
 exports.registar = (body) => {
     const id = uuid();
@@ -10,8 +11,28 @@ exports.registar = (body) => {
         const password = cifra.encrypt(body.pass, dataiv);
         const email = cifra.encrypt(body.email, dataiv);
         bd.query(`insert into users(idUser, username, pass, descricao, email, role, dataiv) values(?, ?, ?, ?, ?, ?, ?);`, [id, body.username, password, body.descricao, email, 1, dataiv], err => {
-            if (err) reject({ message: "unsuccess" })
-            else resolve({ message: "success", role: 1, _id: id });
+            if (err) reject({ message: "unsuccess" });
+            else {
+                mC.makeBucket(id, (err) => {
+                    if (err) reject({ message: "unsuccess" });
+                    console.log('Bucket created successfully.');
+
+                });
+                /*
+                var file = __dirname + '\\..\\files\\f5817a06f-ab5f-45b6-b8c1-fc9058235016EXA_MPC_2014-15.pdf'
+                
+                // Using fPutObject API upload your file to the bucket europetrip.
+                mC.fPutObject('cyberpheonix', 'fds.pdf', file, (err, etag) => {
+                    if (err) {
+                        console.log(err);
+                        reject({ message: "unsuccess" });
+                    }
+                    console.log('File uploaded successfully.')
+                });
+                */
+                resolve({ message: "success", role: 1, _id: id });
+
+            }
         });
     });
 }
@@ -78,7 +99,17 @@ exports.apagarEspecifico = (id) => {
                             else {
                                 bd.query(`delete from users where idUser = ?;`, [id], (err) => {
                                     if (err) reject(err);
-                                    else resolve({ message: "goodBye" });
+                                    else {
+                                        mC.bucketExists(id, (err, exists) => {
+                                            if (err) reject(err);
+                                            else if (exists) {
+                                                mC.removeBucket(id, (err) => {
+                                                    if (err) reject(err);
+                                                    resolve({ message: "goodBye" });
+                                                });
+                                            }
+                                        })
+                                    }
                                 });
                             }
                         });

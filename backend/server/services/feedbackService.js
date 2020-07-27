@@ -1,4 +1,4 @@
-const bd = require("./../bd/sql");
+const bd = require("../bd/sql");
 const uuid = require("uuid").v4;
 
 

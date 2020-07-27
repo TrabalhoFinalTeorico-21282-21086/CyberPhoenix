@@ -27,7 +27,7 @@ class FilePage extends Component {
                 const data = res.data[0];
                 this.setState({ nome: data.nome, descricao: data.descricao, localFicheiro: data.localFicheiro });
             })
-            .catch(err => { console.log(err.message) })
+            .catch(err => { alert("olha, houve um erro"); })
 
         Axios.get("http://localhost:5000/feedback/" + this.props.match.params.id, config)
             .then(res => {
@@ -35,7 +35,7 @@ class FilePage extends Component {
                 data.reverse();
                 this.setState({ comentarios: data });
             })
-            .catch(err => { console.log(err.message) })
+            .catch(err => { alert("olha, houve um erro"); })
     }
 
     actComentar = (event) => {
@@ -57,12 +57,24 @@ class FilePage extends Component {
             }
             Axios.post("http://localhost:5000/feedback", com, config)
                 .then(res => { window.location.assign("/Ficheiro/" + this.props.match.params.id); })
-                .catch(err => { console.log(err.message) })
+                .catch(err => { alert("olha, houve um erro"); })
         }
     }
 
     download = () => {
         window.open("http://localhost:5000/upDown/download/" + this.state.localFicheiro);
+
+        /*const config = {
+            headers: {
+                'Authorization': this.context.user.data.token,
+            }
+        }
+        Axios.get("http://localhost:5000/upDown/download/" + this.state.localFicheiro, config)
+            .then(res => {
+                const data = res.data[0];
+                this.setState({ nome: data.nome, descricao: data.descricao, localFicheiro: data.localFicheiro });
+            })
+            .catch(err => { alert("olha, houve um erro") });*/
     }
 
     verImagem = () => {

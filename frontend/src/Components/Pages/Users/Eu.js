@@ -121,7 +121,7 @@ class Eu extends Component {
                                         <td>{ficheiro.tipoDeFicheiro}</td>
                                         <td><button type="button" class="btn btn-outline-dark" onClick={() => this.change(ficheiro.idFicheiro)} >Visualizar</button></td>
                                         <td><button type="button" class="btn btn-outline-primary" onClick={() => this.updateFicheiro(ficheiro.idFicheiro)} >Modificar</button></td>
-                                        <td><button type="button" class="btn btn-outline-danger" onClick={() => this.apagarFicheiro({ idFicheiro: ficheiro.idFicheiro, localFicheiro: ficheiro.localFicheiro })} >Apagar</button></td>
+                                        <td><button type="button" class="btn btn-outline-danger" onClick={() => this.apagarFicheiro({ idFicheiro: ficheiro.idFicheiro, localFicheiro: ficheiro.localFicheiro, idUser: this.context.user.data._id })} >Apagar</button></td>
                                     </tr>
                                 );
                             })

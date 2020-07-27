@@ -1,6 +1,7 @@
 const bd = require("./../bd/sql");
 const uuid = require("uuid").v4;
 const fs = require("fs");
+const mC = require("../bd/minIO");
 
 
 //insere de dados a entrada de um novo ficheiro e cria o ficheiro na pasta files
@@ -12,13 +13,36 @@ exports.inserirFicheiro = (idUser, body, file) => {
         bd.query(`insert into ficheiro(idFicheiro, idUser, nome, descricao, tipoDeFicheiro, localFicheiro) values(?,?,?,?,?,?);`, [idFicheiro, idUser, body.nome, body.descricao, body.tipo, nomeFicheiro], err => {
             if (err) reject({ message: "Nâo foi possivel carregar o ficheiro" });
             else {
-                ficheiro.mv(__dirname + "/../files/" + nomeFicheiro, erro => {
+                var fileName = __dirname + nomeFicheiro;
+                ficheiro.mv(fileName, erro => {
                     if (erro) {
                         bd.query("delete from ficheiro where localFicheiro = ?", [nomeFicheiro]);
                         reject({ message: "Nâo foi possivel carregar o ficheiro" });
                     }
-                    else resolve({ message: "Ficheiro carregado com sucesso" });
+                    else {
+                        // Using fPutObject API upload your file to the bucket europetrip.
+                        mC.fPutObject(idUser, nomeFicheiro, fileName, (err, etag) => {
+                            if (err) {
+                                bd.query("delete from ficheiro where localFicheiro = ?", [nomeFicheiro]);
+                                reject({ message: "Nâo foi possivel carregar o ficheiro" });
+                            }
+                            else {
+                                fs.unlink(fileName, (err) => {
+                                    if (err) {
+                                        console.log("ola");
+                                        bd.query("delete from ficheiro where localFicheiro = ?", [nomeFicheiro]);
+                                        reject({ message: "Nâo foi possivel carregar o ficheiro" });
+                                    }
+                                    else resolve({ message: "Ficheiro carregado com sucesso" });
+                                });
+                            }
+                        });
+                    }
                 });
+
+
+
+
             }
         }
         );
@@ -43,11 +67,10 @@ exports.apagarFicheiro = (body) => {
                 bd.query(`delete from ficheiro where idFicheiro = ?`, [body.idFicheiro], (err) => {
                     if (err) reject(err);
                     else {
-                        fs.unlink(__dirname + "/../files/" + body.localFicheiro, (err) => {
+                        mC.removeObject(body.idUser, body.localFicheiro, (err) => {
                             if (err) reject(err);
                             else resolve("success");
                         });
-                        resolve("success");
                     }
                 });
             }
